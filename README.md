@@ -4,8 +4,6 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20Preview-16a34a?style=for-the-badge&logo=githubpages&logoColor=white)](https://laiba-shehbaz.github.io/python-functions-lists-assessment/preview.html)
 
-🔗 **Live Preview:** https://laiba-shehbaz.github.io/python-functions-lists-assessment/preview.html
-
 ## 1. Overview
 
 This repository holds my two compulsory programs for the *Functions, Strings and Lists* assessment (2 days, individual work). Both are console programs written in standard Python 3 with no third-party libraries.
