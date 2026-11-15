@@ -305,15 +305,6 @@ Scenarios were run manually by feeding inputs to the programs; there is no autom
 - Ties in the ranking are ordered by name (A-Z) so output is stable.
 - "Above average" means strictly greater than the average.
 
-## 10. References
-
-1. Python Software Foundation, *Built-in Types: String Methods* - https://docs.python.org/3/library/stdtypes.html#string-methods
-2. Python Software Foundation, *Defining Functions* - https://docs.python.org/3/tutorial/controlflow.html#defining-functions
-3. Python Software Foundation, *More on Lists* - https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
-4. Python Software Foundation, *Sorting HOW TO* - https://docs.python.org/3/howto/sorting.html
-5. Python Software Foundation, *Format String Syntax* - https://docs.python.org/3/library/string.html#format-specification-mini-language
-6. van Rossum, Warsaw, Coghlan, *PEP 8 - Style Guide for Python Code* - https://peps.python.org/pep-0008/
-
 ## 11. Submission checklist
 
 - [x] `result_card_generator.py`, `class_marks_analyzer.py`, `README.md`
@@ -321,3 +312,4 @@ Scenarios were run manually by feeding inputs to the programs; there is no autom
 - [x] Input validation in both programs
 - [ ] Create the GitHub repo `python-functions-lists-assessment`, push with `git add . && git commit -m "Add assessment" && git push`
 - [ ] Submit the repo URL (https://github.com/laiba-shehbaz/python-functions-lists-assessment) on the LMS
+<p align="center"> <b>Author:</b> Laiba Shehbaz &nbsp;·&nbsp; <b>Assessment:</b> Python Funtions Lists &amp; (Task 1: Class Marks Analyzer, Task 2: Result Card Generator)<br> </p>
