@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Functions, Strings &amp; Lists – Live Preview</title>
+<style>
+:root{--bg:#f5f7f8;--card:#fff;--ink:#14213d;--muted:#55627a;--line:#d5dde3;--accent:#1f6f78;--warn:#c0392b;--ok:#1b7f4b;--gold:#e0a526;--code:#0f1b2e;--codeink:#e6edf3}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1621;--card:#16212f;--ink:#e8eef2;--muted:#9fb0c3;--line:#2a3a4d;--accent:#4fb3bd;--warn:#ff7b6b;--ok:#4cc38a;--code:#0a111a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",system-ui,sans-serif}
+header img{display:block;width:100%;height:auto}
+main{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h2{font-family:Georgia,serif;margin:28px 0 8px}
+.tabs{display:flex;gap:8px;margin:16px 0}
+.tabs button{flex:1;padding:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:600;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:3px}
+input,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:150px;font-family:Consolas,monospace}
+.err{color:var(--warn);font-size:13px;min-height:18px}
+.run{margin-top:14px;padding:11px 22px;border:0;border-radius:8px;background:var(--ink);color:var(--bg);font:inherit;font-weight:700;cursor:pointer}
+pre{background:var(--code);color:var(--codeink);padding:14px;border-radius:8px;overflow-x:auto;font:14px/1.45 Consolas,Menlo,monospace}
+.fail{color:#ff8a7a}.pass{color:#5fd49a}
+img.chart{max-width:100%;border:1px solid var(--line);border-radius:8px}
+p.note{color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<header><img src="assets/banner.svg" alt="Functions, Strings and Lists Python assessment banner"></header>
+<main>
+<p class="note">A browser version of both Python programs. The JavaScript below uses the same validation and grading rules as <code>result_card_generator.py</code> and <code>class_marks_analyzer.py</code>; the Python files remain the submitted work.</p>
+<div class="tabs" role="tablist">
+  <button role="tab" id="t1" aria-selected="true" aria-controls="p1">Task 1: Result Card</button>
+  <button role="tab" id="t2" aria-selected="false" aria-controls="p2">Task 2: Class Analyzer</button>
+</div>
+
+<section class="panel" id="p1" role="tabpanel" aria-labelledby="t1">
+  <div class="grid">
+    <div><label for="name">Student name</label><input id="name" value="  ayesha  khan "></div>
+    <div><label for="roll">Roll number (digits only)</label><input id="roll" value="1024"></div>
+  </div>
+  <h2 style="font-size:18px">Marks (0–100)</h2>
+  <div class="grid" id="subjects"></div>
+  <div class="err" id="err1" role="alert"></div>
+  <button class="run" id="go1">Generate result card</button>
+  <pre id="card" aria-live="polite">Press “Generate result card”.</pre>
+  <img class="chart" src="assets/result_card_chart.png" alt="Bar chart of subject marks for a student who fails because Physics is below 40">
+</section>
+
+<section class="panel" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+  <label for="rows">One student per line, as <code>name, marks</code></label>
+  <textarea id="rows">ali raza, 78
+sara khan, 92
+hina, 45
+usman, 92
+zain malik, 49.5
+maria, 63</textarea>
+  <div class="err" id="err2" role="alert"></div>
+  <button class="run" id="go2">Analyze class</button>
+  <pre id="report" aria-live="polite">Press “Analyze class”.</pre>
+  <img class="chart" src="assets/class_marks_chart.png" alt="Bar chart of class marks with the class average and pass mark lines">
+</section>
+</main>
+<script>
+const SUBJECTS=["English","Mathematics","Physics","Chemistry","Computer Science"];
+const defaults=[95,88,92,90,85];
+const $=id=>document.getElementById(id);
+const fmt=n=>String(+n); // 92.0 -> "92", like Python's :g for these values
+const pad=(s,w)=>String(s).padEnd(w), lpad=(s,w)=>String(s).padStart(w);
+
+SUBJECTS.forEach((s,i)=>{$("subjects").insertAdjacentHTML("beforeend",
+ `<div><label for="m${i}">${s}</label><input id="m${i}" inputmode="decimal" value="${defaults[i]}"></div>`)});
+
+/* ---- Task 1 logic (mirrors the Python functions) ---- */
+const formatName=n=>n.trim().replace(/\w\S*/g,w=>w[0].toUpperCase()+w.slice(1).toLowerCase()).split(/\s+/).join(" ");
+const validMarks=raw=>{raw=raw.trim();if(raw===""||isNaN(Number(raw)))return null;const v=Number(raw);return v>=0&&v<=100?v:null};
+const percentage=(t,m)=>m===0?0:t/m*100;
+const grade=p=>p>=90?"A+":p>=80?"A":p>=70?"B":p>=60?"C":p>=50?"D":"Fail";
+const status=(marks,g)=>g==="Fail"||Math.min(...marks)<40?"Fail":"Pass";
+
+$("go1").onclick=()=>{
+  const name=formatName($("name").value), roll=$("roll").value.trim(), errs=[];
+  if(!/^[A-Za-z .'-]+$/.test(name)||!/[A-Za-z]/.test(name))errs.push("Name must contain letters only.");
+  if(!/^[0-9]+$/.test(roll))errs.push("Roll number must contain digits only.");
+  const marks=SUBJECTS.map((s,i)=>{const v=validMarks($("m"+i).value);if(v===null)errs.push(s+": marks must be a number from 0 to 100.");return v});
+  $("err1").textContent=errs.join(" ");
+  if(errs.length){$("card").textContent="Fix the errors above and try again.";return}
+  const total=marks.reduce((a,b)=>a+b,0),pct=percentage(total,500),g=grade(pct),st=status(marks,g);
+  const bar="=".repeat(46),thin="-".repeat(46);
+  let out=`${bar}\n${"STUDENT RESULT CARD".padStart(32).padEnd(46)}\n${bar}\n  Name         : ${name}\n  Roll Number  : ${roll}\n${thin}\n  ${pad("Subject",20)}${lpad("Marks",8)}\n${thin}\n`;
+  SUBJECTS.forEach((s,i)=>{out+=`  ${pad(s,20)}${lpad(fmt(marks[i]),8)} / 100${marks[i]<40?"  <- below 40":""}\n`});
+  out+=`${thin}\n  Total Marks  : ${fmt(total)} / 500\n  Percentage   : ${pct.toFixed(2)}%\n  Grade        : ${g}\n  Final Status : ${st}\n${bar}`;
+  $("card").textContent=out;
+  if(st==="Fail"&&g!=="Fail")$("card").textContent+="\nNote: Failed because at least one subject is below 40.";
+};
+
+/* ---- Task 2 logic ---- */
+$("go2").onclick=()=>{
+  const names=[],marks=[],errs=[];
+  $("rows").value.split("\n").filter(l=>l.trim()).forEach((line,i)=>{
+    const k=line.lastIndexOf(","); const n=k<0?"":line.slice(0,k).trim(); const m=k<0?null:validMarks(line.slice(k+1));
+    if(!n||m===null){errs.push(`Line ${i+1}: use "name, marks" with marks from 0 to 100.`);return}
+    names.push(formatName(n));marks.push(m);
+  });
+  $("err2").textContent=errs.join(" ");
+  if(errs.length||!marks.length){$("report").textContent="Fix the errors above and try again.";return}
+  const avg=marks.reduce((a,b)=>a+b,0)/marks.length,hi=Math.max(...marks),lo=Math.min(...marks);
+  const who=v=>names.filter((_,i)=>marks[i]===v).join(", ");
+  const passed=marks.filter(m=>m>=50).length;
+  const above=names.map((n,i)=>[n,marks[i]]).filter(p=>p[1]>avg);
+  const rank=names.map((n,i)=>[n,marks[i]]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+  let o=`--- Class Summary ---\nTotal students : ${marks.length}\nClass average  : ${avg.toFixed(2)}\nHighest marks  : ${fmt(hi)} -> ${who(hi)}\nLowest marks   : ${fmt(lo)} -> ${who(lo)}\n\n--- Pass / Fail ---\nPassing (>= 50) : ${passed}\nFailing (<  50) : ${marks.length-passed}\n\n--- Above Class Average ---\n`;
+  o+=above.length?above.map(p=>`  ${pad(p[0],20)}${lpad(fmt(p[1]),6)}`).join("\n"):"  No student scored above the class average.";
+  o+=`\n\n--- Marks (Highest to Lowest) ---\n`+rank.map((p,i)=>`  ${lpad(i+1,2)}. ${pad(p[0],20)}${lpad(fmt(p[1]),6)}`).join("\n");
+  $("report").textContent=o;
+};
+
+/* ---- Tabs ---- */
+[["t1","p1"],["t2","p2"]].forEach(([t,p])=>$(t).onclick=()=>{
+  [["t1","p1"],["t2","p2"]].forEach(([a,b])=>{$(a).setAttribute("aria-selected",a===t);$(b).hidden=b!==p});
+});
+</script>
+</body>
+</html>
