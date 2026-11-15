@@ -2,9 +2,9 @@
 
 # Python Functions, Strings & Lists Assessment
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white) ![Tasks](https://img.shields.io/badge/tasks-2%2F2%20complete-1b7f4b) ![Type](https://img.shields.io/badge/assessment-individual-14213d)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20Preview-16a34a?style=for-the-badge&logo=githubpages&logoColor=white)](https://laiba-shehbaz.github.io/python-functions-lists-assessment/preview.html)
 
-**Live preview:** open [`preview.html`](preview.html) in a browser (or enable GitHub Pages and visit `https://laiba-shehbaz.github.io/python-functions-lists-assessment/preview.html`). It runs both programs' logic in the browser with editable inputs.
+🔗 **Live Preview:** https://laiba-shehbaz.github.io/python-functions-lists-assessment/preview.html
 
 ## 1. Overview
 
